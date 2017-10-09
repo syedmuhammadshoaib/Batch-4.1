@@ -1,11 +1,242 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Theory Assignments</title>
-<script src="app.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+ <link rel="icon" href="quiz.png">
+  <title>Quiz-Application</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+    crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="custom.css">
+
+
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAl0vW5BwzI-oNX19g6L20A_EeJrGaG-3g",
+        authDomain: "todoapplication-11cf3.firebaseapp.com",
+        databaseURL: "https://todoapplication-11cf3.firebaseio.com",
+        projectId: "todoapplication-11cf3",
+        storageBucket: "todoapplication-11cf3.appspot.com",
+        messagingSenderId: "494795032336"
+      };
+      firebase.initializeApp(config);
+    </script>
 </head>
+
 <body>
+  <div class="container">
+    <div class="row">
+      <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand active" href="#">Quiz-Application</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse " id="navbarsExampleDefault">
+            <ul class="nav navbar-nav ">
+              <li class="nav-item  float-right">
+                <a class="nav-link active" href="#" id="loginID" onclick="RequestClick(this)" value="1" class="btn btn-info btn-lg" data-toggle="modal"
+                  data-target="#myModal">Login <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#" id="signupID" onclick="RequestClick(this)" value="2" class="btn btn-info btn-lg" data-toggle="modal"
+                  data-target="#myModal2">Signup</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active " href="#"><b > <span class="active" id="loginname"></span></b></a>
+              </li>
+
+            </ul>
+
+          </div>
+      </nav>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-2 col-lg-2 "></div>
+      <div class="starter col-md-8 col-lg-8 col-sm-12 col-xs-12" id="quizstarter">
+
+        <div class="modalfloat-right-dialog" role="document">
+          <div class="row">
+            <div class="modal-title col-md-10 col-lg-10 col-sm-12 col-xs-8" id="title"></div>
+
+            <div class="float-right" id="timer"></div>
+          </div>
+          <hr/>
+          <div class="">
+            <div class="modal-body" id="quizBody">
+            </div>
+            <div class="row">
+              <div id="questionSection" class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+              <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2"></div>
+              <div id="answerSection" class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
+              </div>
+
+              <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div id="nextbtn"></div>
+            <span id="error"></span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/.starter -->
+    <!--Login Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header header">
+            <h4 class="modal-title panel panel-primary class">Login</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+          </div>
+          <div class="modal-body ">
+
+
+            <div class="input-group input-group-lg clearfix">
+              <span class="input-group-addon" id="sizing-addon1">@</span>
+              <input type="email" class="form-control" placeholder="Email Address" id="userEmail" aria-describedby="sizing-addon1" required="">
+            </div>
+            <br/>
+
+            <div class="form-group">
+              <div class="input-group input-group-lg clearfix">
+                <span class="input-group-addon" id="sizing-addon2">*</span>
+                <input type="password" class="form-control" placeholder="Password" id="userPassword" aria-describedby="sizing-addon2">
+              </div>
+            </div>
+
+            <div class="alert alert-danger" id="userErroremail" role="alert">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span> Please Enter Correct Email Address!
+            </div>
+            <div class="alert alert-danger" id="userErrorpassword" role="alert">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span> Please Enter Password with 7 digit long !
+            </div>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="Validate(userEmail,userPassword)" data-dismiss="modal">Login</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!--Signup-->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header header">
+            <h4 class="modal-title panel panel-primary class">Signup</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+          </div>
+          <div class="modal-body ">
+
+
+
+            <div class="input-group input-group-lg clearfix">
+              <span class="input-group-addon" id="sizing-addon1"></span>
+              <input type="text" class="form-control" placeholder="Enter your name" id="userName" aria-describedby="sizing-addon1">
+            </div>
+            <br/>
+
+            <div class="input-group input-group-lg clearfix">
+              <span class="input-group-addon" id="sizing-addon1">@</span>
+              <input type="text" class="form-control " placeholder="Email Address" id="userEmailsign" aria-describedby="sizing-addon1">
+            </div>
+            <br/>
+
+            <div class="form-group">
+              <div class="input-group input-group-lg glyphicon glyphicon-user">
+                <span class="input-group-addon" id="sizing-addon2">*</span>
+                <input type="password" class="form-control" placeholder="Password" id="userPasswordsign" aria-describedby="sizing-addon2">
+              </div>
+            </div>
+
+            <div class="alert alert-danger" id="userSignError" role="alert">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span> Please fill all fields !
+            </div>
+
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="Validate(userEmailsign,userPasswordsign)" data-dismiss="modal">Signup</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+  </div>
+  <div class="container jumbotron" id="intro">
+    <ul>
+      <h1>You can test your general knowledge skills by this Quiz.</h1>
+
+      <p>
+        <li><b>The test contains 10 questions and there is 5 minutes time limit.</li><br/>
+
+<li>The test is not official, it's just a nice way to see how much you know, or don't know,about </li><br/>
+
+<li>Count Your Score </li><br/>
+<li>You will get 5 point for each correct answer. At the end of the Quiz, your total score will be displayed. Maximum score is 50 points. <br/>
+
+<li>Start the Quiz </li><br/>
+Good luck!<br/>
+<div id="startquiz"></div>
+</P></ul>
+    </div>
     
+    
+    <!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<script src="app.js"></script>
+
 </body>
+<footer >
+  <p style="text-align: center;color:white"> &copy; Created by <a href="https://www.facebook.com/syed.m.shoaib.5">Syed Mhammad Shoaib</p>
+</footer >
 </html>
